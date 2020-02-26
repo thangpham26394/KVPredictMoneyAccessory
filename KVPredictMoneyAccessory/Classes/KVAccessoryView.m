@@ -17,9 +17,9 @@ static const double PADDING = 20;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] objectAtIndex:0];
+        self = [[[UINib nibWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[KVAccessoryView class]]] instantiateWithOwner:self options:nil] objectAtIndex:0];
     }
-    UINib *cellNib = [UINib nibWithNibName:@"KVMoneyCell" bundle:nil];
+    UINib *cellNib = [UINib nibWithNibName:@"KVMoneyCell" bundle:[NSBundle bundleForClass:[KVMoneyCell class]]];
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:@"KVMoneyCell"];
     [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 40)];
     self.backgroundColor = [UIColor clearColor];
