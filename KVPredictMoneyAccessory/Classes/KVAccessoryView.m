@@ -17,7 +17,10 @@ static const double PADDING = 20;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self = [[[UINib nibWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[KVAccessoryView class]]] instantiateWithOwner:self options:nil] objectAtIndex:0];
+        NSBundle *bundle = [NSBundle bundleForClass:[KVAccessoryView class]];
+        UINib *nib = [[bundle loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil] firstObject];
+        
+        self = (KVAccessoryView *)nib;
     }
     UINib *cellNib = [UINib nibWithNibName:@"KVMoneyCell" bundle:[NSBundle bundleForClass:[KVMoneyCell class]]];
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:@"KVMoneyCell"];
