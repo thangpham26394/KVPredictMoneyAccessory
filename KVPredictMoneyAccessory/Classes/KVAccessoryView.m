@@ -8,6 +8,7 @@
 
 #import "KVAccessoryView.h"
 #import "KVMoneyCell.h"
+#import "KVAutoCorrectMoney.h"
 
 static const double MINWIDTH = 52;
 static const double PADDING = 20;
@@ -17,7 +18,7 @@ static const double PADDING = 20;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        NSBundle *bundle = [NSBundle bundleForClass:[KVAccessoryView class]];
+        NSBundle *bundle = [NSBundle bundleForClass:[KVAutoCorrectMoney class]];
         UINib *nib = [[bundle loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil] firstObject];
         
         self = (KVAccessoryView *)nib;
