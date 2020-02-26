@@ -16,16 +16,25 @@ static const double PADDING = 20;
 
 - (instancetype)init {
     self = [super init];
-    if (self) {
-        self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] objectAtIndex:0];
-    }
+    [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, 637, 40)];
+    self.backgroundColor = [UIColor clearColor];
+    UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(5, 5, [UIScreen mainScreen].bounds.size.width - 65, 30) collectionViewLayout:flowLayout];
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    [self addSubview:self.collectionView];
+    
     UINib *cellNib = [UINib nibWithNibName:@"KVMoneyCell" bundle:nil];
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:@"KVMoneyCell"];
-    [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 40)];
-    self.backgroundColor = [UIColor clearColor];
     self.collectionView.backgroundColor = [UIColor clearColor];
     self.collectionView.layer.cornerRadius = self.collectionView.frame.size.height/2 - 1 ;
     self.collectionView.layer.masksToBounds = YES;
+    
+    
+    self.doneButton = [[UIButton alloc] initWithFrame:CGRectMake(5 + self.collectionView.frame.size.width + 10, 5, 50, 30)];
+    [self addSubview:self.doneButton];
+    
     
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:self.bounds];
     toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
