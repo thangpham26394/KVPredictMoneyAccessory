@@ -17,11 +17,11 @@
 
 
 @interface KVAccessoryView : UIView<UICollectionViewDelegate,UICollectionViewDataSource>
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *potentialValues;
 @property (strong, nonatomic) NSMutableArray *fullOptionValues;
 @property (weak, nonatomic) id<KVAccessoryViewDelegate> delegate;
-@property (weak, nonatomic) IBOutlet UIButton *doneButton;
+@property (strong, nonatomic) UIButton *doneButton;
 @property (assign, nonatomic) BOOL shouldAnimate;
 @property (assign, nonatomic) NSTimeInterval lastAnimateTime;
 -(instancetype)init;

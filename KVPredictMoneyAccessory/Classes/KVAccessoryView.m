@@ -8,6 +8,7 @@
 
 #import "KVAccessoryView.h"
 #import "KVMoneyCell.h"
+#import "KVUtil.h"
 
 static const double MINWIDTH = 52;
 static const double PADDING = 20;
@@ -16,16 +17,27 @@ static const double PADDING = 20;
 
 - (instancetype)init {
     self = [super init];
-    if (self) {
-        self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] objectAtIndex:0];
-    }
+    [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, 637, 40)];
+    self.backgroundColor = [UIColor clearColor];
+    UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
+//    flowLayout.itemSize = CGSizeMake(100, 30);
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+//    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(5, 5, [UIScreen mainScreen].bounds.size.width - 65, 30)];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(5, 5, [UIScreen mainScreen].bounds.size.width - 65, 30) collectionViewLayout:flowLayout];
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    [self addSubview:self.collectionView];
+    
     UINib *cellNib = [UINib nibWithNibName:@"KVMoneyCell" bundle:nil];
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:@"KVMoneyCell"];
-    [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 40)];
-    self.backgroundColor = [UIColor clearColor];
     self.collectionView.backgroundColor = [UIColor clearColor];
     self.collectionView.layer.cornerRadius = self.collectionView.frame.size.height/2 - 1 ;
     self.collectionView.layer.masksToBounds = YES;
+    
+    
+    self.doneButton = [[UIButton alloc] initWithFrame:CGRectMake(5 + self.collectionView.frame.size.width + 10, 5, 50, 30)];
+    [self addSubview:self.doneButton];
+    
     
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:self.bounds];
     toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -58,7 +70,7 @@ static const double PADDING = 20;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     KVMoneyCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:@"KVMoneyCell" forIndexPath:indexPath];
     
-    cell.label.text = [[self priceFormatter] stringFromNumber:self.potentialValues[indexPath.row]];
+    cell.label.text = [[KVUtil priceFormatter] stringFromNumber:self.potentialValues[indexPath.row]];
     if (self.shouldAnimate) {
         CGFloat currentXValue = cell.frame.origin.x;
         
@@ -105,7 +117,7 @@ static const double PADDING = 20;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGSize labelSize = [[[self priceFormatter] stringFromNumber:self.potentialValues[indexPath.row]] sizeWithAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:17]}];
+    CGSize labelSize = [[[KVUtil priceFormatter] stringFromNumber:self.potentialValues[indexPath.row]] sizeWithAttributes:@{NSFontAttributeName : HelveticaNeue(17)}];
     
     if (labelSize.width < MINWIDTH ) {
         return CGSizeMake(MINWIDTH + PADDING, 30);
@@ -121,20 +133,6 @@ static const double PADDING = 20;
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSelecteValue:)]) {
         [self.delegate didSelecteValue:[self.potentialValues[indexPath.row] doubleValue]];
     }
-}
-
-- (NSNumberFormatter *)priceFormatter {
-    static NSNumberFormatter *priceFormatter;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        priceFormatter = [[NSNumberFormatter alloc] init];
-        priceFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-        priceFormatter.roundingMode = NSNumberFormatterRoundHalfUp;
-        priceFormatter.maximumFractionDigits = 2;
-        priceFormatter.decimalSeparator = @".";
-        priceFormatter.groupingSeparator = @",";
-    });
-    return priceFormatter;
 }
 
 @end
