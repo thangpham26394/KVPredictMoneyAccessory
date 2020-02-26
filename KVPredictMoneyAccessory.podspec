@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KVPredictMoneyAccessory'
-  s.version          = '1.0.6'
+  s.version          = '1.0.7'
   s.summary          = 'View dự đoán giá tiền khách có thể đưa dựa trên số tiền khách cần trả'
 
 # This description is used to generate tags and improve search results.
@@ -30,7 +30,7 @@ Accessory view hiển thị các giá trị tiền user có thể nhập dựa v
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'KVPredictMoneyAccessory/Classes/*.{h,m}'
+  s.source_files = 'KVPredictMoneyAccessory/Classes/*'
   
   # s.resource_bundles = {
   #   'KVPredictMoneyAccessory' => ['KVPredictMoneyAccessory/Assets/*.png']
